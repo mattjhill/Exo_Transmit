@@ -44,7 +44,7 @@ extern struct Opac opac;
 /* ------- begin ---------------- RT_Transmit -------------------- */
 
 
-int RT_Transmit()
+int RT_Transmit(double* wavelength, double* flux)
 {
   char **fileArray = getFileArray();
   vars variables = getVars();
@@ -61,7 +61,7 @@ int RT_Transmit()
   double *intensity, *flux_st, *flux_pl, *flux_tr;
   double *ds, *theta, *dtheta, R, t_star;
   int i, j, a, b;
-  FILE *file;
+  // FILE *file;
   
   /*   Allocate memory */
   
@@ -137,7 +137,7 @@ int RT_Transmit()
   R -=  Radius(R_PLANET, ds, NTAU);
   printf("R %f\n", (1.0 -  SQ(R)/SQ(R_STAR)));
   
-  file = fopen(fileArray[2], "w");
+  // file = fopen(fileArray[2], "w");
   
   t_star = 6000.0;  // Arbitrary stellar temperature.  Gets divided out.
 
@@ -156,10 +156,12 @@ int RT_Transmit()
     flux_tr[i] = (1.0 -  SQ(Radius(R_PLANET, ds, NTAU))/SQ(R_STAR)) 
       * flux_st[i] + flux_pl[i];
     
-    fprintf(file, "%e\t%e\n", atmos.lambda[i], 100.0*(1.0-flux_tr[i]/flux_st[i]));
+    // fprintf(file, "%e\t%e\n", atmos.lambda[i], 100.0*(1.0-flux_tr[i]/flux_st[i]));
+    wavelength[i] = atmos.lambda[i];
+    flux[i] = 100.0*(1.0-flux_tr[i]/flux_st[i]);
   }
   
-  fclose(file);
+  // fclose(file);
   
   /*   Free memory */
   

@@ -32,7 +32,7 @@ double Radius(double R_pl, double *ds, int NT);
 void Angles(double *ds, double *theta, double *dtheta, int NT, double Rpl, double Rst);
 void Tau_LOS(double **kappa_nu, double **tau_tr, double *ds, int NT, double Rpl, int NLam);
 void Locate(int n, double *array, double value, int *ilow);
-int  RT_Transmit();
+int  RT_Transmit(double* wavelength, double* flux);
 void ReadTP();
 void TotalOpac();
 double Planck(double T, double lambda);
