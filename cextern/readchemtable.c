@@ -38,7 +38,7 @@ extern struct Chem chem;
 
 /* ------- begin ------------ ReadChemTable.c -------------------- */
 
-void ReadChemTable() {
+void ReadChemTable(struct vars variables) {
   
   int i, j;
   char dum[8];
@@ -46,7 +46,7 @@ void ReadChemTable() {
   
   /* Initialize and obtain variables from other files */
   char **fileArray = getFileArray();
-  vars variables = getVars();
+  // vars variables = getVars();
   getChemSelection(chemSelection);
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;
@@ -275,9 +275,9 @@ void ReadChemTable() {
 
 /* ------- start ------------ FreeChemTable.c -------------------- */
 
-void FreeChemTable(){ 
+void FreeChemTable(struct vars variables){ 
 
-  vars variables = getVars();
+  // vars variables = getVars();
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;
 

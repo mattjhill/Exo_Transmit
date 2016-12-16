@@ -44,11 +44,11 @@ extern struct Opac opac;
 /* ------- begin ---------------- RT_Transmit -------------------- */
 
 
-int RT_Transmit(double* wavelength, double* flux)
+int RT_Transmit(struct vars variables, double* wavelength, double* flux)
 {
   char **fileArray = getFileArray();
-  vars variables = getVars();
-  getNTau(&variables, fileArray[0]);
+  // vars variables = getVars();
+  getNTau(&variables, variables.tpfname);
   int NTAU = variables.NTAU;
   double R_PLANET = variables.R_PLANET;
   double R_STAR = variables.R_STAR;

@@ -43,13 +43,13 @@ extern struct Opac opac;
 
 /* ------- begin --------------------- ReadTP.c ------------------ */
 
-void ReadTP()
+void ReadTP(struct vars variables)
 {
   
   /* Get relevant variables */
   char **fileArray = getFileArray();	
-  vars variables = getVars();
-  getNTau(&variables, fileArray[0]);
+  // vars variables = getVars();
+  getNTau(&variables, variables.tpfname);
   
   /* Rename for convenience */
   int NTEMP = variables.NTEMP; 
@@ -67,7 +67,7 @@ void ReadTP()
   atmos.T = dvector(0, NTAU-1);
   atmos.mu = dvector(0, NTAU-1);
   
-  file = fopen(fileArray[0], "r");						
+  file = fopen(variables.tpfname, "r");						
   if(file == NULL){
     printf("\nread_t_p.c:\nError opening file: No such file or directory\n\n");
     exit(1);
@@ -151,11 +151,11 @@ void ReadTP()
 
 /* ------- start --------------------- FreeTP.c ------------------ */
 
-void FreeTP(){
+void FreeTP(struct vars variables){
   
   /* Frees atmos structure */
   
-  vars variables = getVars();
+  // vars variables = getVars();
   int NTAU = variables.NTAU;
   int NLAMBDA = variables.NLAMBDA;
 

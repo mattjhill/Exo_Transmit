@@ -44,6 +44,8 @@ typedef struct vars{
   double R_STAR;
   double T_STAR;
 
+  char* tpfname;
+
 }vars;
 
 //extern vars variables;

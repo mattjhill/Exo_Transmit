@@ -44,11 +44,11 @@ extern struct Atmos atmos;
 
 /* ------- begin ------------ ReadOpacTable.c -------------------- */
 
-void ReadOpacTable(struct Opac opac, char *filename) {
+void ReadOpacTable(struct vars variables, struct Opac opac, char *filename) {
 
   int i, j, k;
   double junk;
-  vars variables = getVars();
+  // vars variables = getVars();
   int NLAMBDA = variables.NLAMBDA;
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;
@@ -104,9 +104,9 @@ void ReadOpacTable(struct Opac opac, char *filename) {
 
 /* ------- begin ------------ FreeOpacTable.c -------------------- */
 
-void FreeOpacTable(struct Opac opac)
+void FreeOpacTable(struct vars variables, struct Opac opac)
 {
-  vars variables = getVars();
+  // vars variables = getVars();
   int NLAMBDA = variables.NLAMBDA;
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;

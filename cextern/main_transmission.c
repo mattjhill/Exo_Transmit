@@ -40,20 +40,20 @@ struct Chem chem;
 /* ------- begin ---------------- main --------------------------- */
 
 
-void transmission(double* wavelength, double* flux)
+void transmission(struct vars variables, double* wavelength, double* flux)
 {
-  TotalOpac();
+  TotalOpac(variables);
   printf("TotalOpac done\n");
 
-  ReadTP();
+  ReadTP(variables);
   printf("ReadTP done\n");
 
-  RT_Transmit(wavelength, flux);
+  RT_Transmit(variables, wavelength, flux);
   printf("Exo_Transmit done\n");
 
-  FreeTP();
-  FreeOpacTable(opac);
-  FreeChemTable(chem);
+  FreeTP(variables);
+  FreeOpacTable(variables, opac);
+  FreeChemTable(variables);
 }
 
 /* ------- end -------- main_transmission.c  --------------------- */
