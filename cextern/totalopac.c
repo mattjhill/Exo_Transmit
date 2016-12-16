@@ -82,7 +82,7 @@ struct Opac opacCIA;
 
 /* ------- begin ------------ TotalOpac.c ------------------------ */
 
-void TotalOpac() {
+void TotalOpac(struct vars variables) {
 
   double **opac_CIA_H2H2, **opac_CIA_H2He, **opac_CIA_H2H, 
     **opac_CIA_H2CH4, **opac_CIA_CH4Ar, **opac_CIA_CH4CH4, 
@@ -92,10 +92,14 @@ void TotalOpac() {
   int i, j, k;
   
   char **fileArray = getFileArray(); 	//get file names
-  vars variables = getVars(); 		//get planet variables
+  // vars variables = getVars(); 		//get planet variables
   int chemSelection[32]; 		//get chemistry selections
   
-  getChemSelection(chemSelection); 
+  // getChemSelection(chemSelection); 
+  for (i=0; i<32; i++) {
+    chemSelection[i] = variables.chemselection[i];
+    printf("%d %d\n", variables.chemselection[i], chemSelection[i]);
+  }
   
   int NLAMBDA = variables.NLAMBDA; 	//rename relevant variables
   int NPRESSURE = variables.NPRESSURE;
@@ -163,7 +167,7 @@ void TotalOpac() {
   
   /* Read Chemistry Table */
   
-  ReadChemTable();
+  ReadChemTable(variables);
   printf("ReadChemTable done\n");
   
   /* Allocate for total opacity */
@@ -243,7 +247,7 @@ void TotalOpac() {
       }
     }
     
-    ReadOpacTable(opacCH4, fileArray[3]);     //Read opacity table for CH4
+    ReadOpacTable(variables, opacCH4, fileArray[3]);     //Read opacity table for CH4
     
     /* Populate opac.kappa */
     for (i=0; i<NLAMBDA; i++)
@@ -254,7 +258,7 @@ void TotalOpac() {
     
     printf("Read CH4 Opacity done\n");	     //Confirmation message
     
-    FreeOpacTable(opacCH4);                  //Free CH4 opacity table
+    FreeOpacTable(variables, opacCH4);                  //Free CH4 opacity table
   }
   
   //This procedure repeats for all gases!!
@@ -272,7 +276,7 @@ void TotalOpac() {
 	opacCO2.abundance[j][k] = chem.CO2[j][k];
       }
     }
-    ReadOpacTable(opacCO2, fileArray[8]);
+    ReadOpacTable(variables, opacCO2, fileArray[8]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -282,7 +286,7 @@ void TotalOpac() {
     
     printf("Read CO2 Opacity done\n");
 
-    FreeOpacTable(opacCO2);
+    FreeOpacTable(variables, opacCO2);
   }
   
   /* Fill in CO opacities */
@@ -298,7 +302,7 @@ void TotalOpac() {
 	opacCO.abundance[j][k] = chem.CO[j][k];
       }
     }
-    ReadOpacTable(opacCO, fileArray[7]);
+    ReadOpacTable(variables, opacCO, fileArray[7]);
     
     //Populate opac.kappa
     for(i=0; i<NLAMBDA; i++)
@@ -308,7 +312,7 @@ void TotalOpac() {
     
     printf("Read CO Opacity done\n");
 
-    FreeOpacTable(opacCO);
+    FreeOpacTable(variables, opacCO);
   }
   
   /* Fill in H2O opacities */
@@ -324,7 +328,7 @@ void TotalOpac() {
 	opacH2O.abundance[j][k] = chem.H2O[j][k];
       }
     }
-    ReadOpacTable(opacH2O, fileArray[10]);
+    ReadOpacTable(variables, opacH2O, fileArray[10]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -334,7 +338,7 @@ void TotalOpac() {
     
     printf("Read H2O Opacity done\n");
 
-    FreeOpacTable(opacH2O);
+    FreeOpacTable(variables, opacH2O);
   }
   
   /* Fill in NH3 opacities */
@@ -350,7 +354,7 @@ void TotalOpac() {
 	opacNH3.abundance[j][k] = chem.NH3[j][k];
       }
     }
-    ReadOpacTable(opacNH3, fileArray[17]);
+    ReadOpacTable(variables, opacNH3, fileArray[17]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -360,7 +364,7 @@ void TotalOpac() {
     
     printf("Read NH3 Opacity done\n");
 
-    FreeOpacTable(opacNH3);
+    FreeOpacTable(variables, opacNH3);
   }
   
   /* Fill in O2 opacities */
@@ -376,7 +380,7 @@ void TotalOpac() {
 	opacO2.abundance[j][k] = chem.O2[j][k];
       }
     }
-    ReadOpacTable(opacO2, fileArray[20]);
+    ReadOpacTable(variables, opacO2, fileArray[20]);
     
     //Populate opac.kappa
     for(i=0; i<NLAMBDA; i++)
@@ -386,7 +390,7 @@ void TotalOpac() {
     
     printf("Read O2 Opacity done\n");
 
-    FreeOpacTable(opacO2);
+    FreeOpacTable(variables, opacO2);
   }
   
   /* Fill in O3 opacities */
@@ -402,7 +406,7 @@ void TotalOpac() {
 	opacO3.abundance[j][k] = chem.O3[j][k];
       }
     }
-    ReadOpacTable(opacO3, fileArray[21]);
+    ReadOpacTable(variables, opacO3, fileArray[21]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -412,7 +416,7 @@ void TotalOpac() {
     
     printf("Read O3 Opacity done\n");
     
-    FreeOpacTable(opacO3);
+    FreeOpacTable(variables, opacO3);
   }
   
   /* Fill in C2H2 opacities */
@@ -428,7 +432,7 @@ void TotalOpac() {
 	opacC2H2.abundance[j][k] = chem.C2H2[j][k];
       }
     }
-    ReadOpacTable(opacC2H2, fileArray[4]);
+    ReadOpacTable(variables, opacC2H2, fileArray[4]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -438,7 +442,7 @@ void TotalOpac() {
     
     printf("Read C2H2 Opacity done\n");
 
-    FreeOpacTable(opacC2H2);
+    FreeOpacTable(variables, opacC2H2);
   }
   
   /* Fill in C2H4 opacities */
@@ -454,7 +458,7 @@ void TotalOpac() {
 	opacC2H4.abundance[j][k] = chem.C2H4[j][k];
       }
     }
-    ReadOpacTable(opacC2H4, fileArray[5]);
+    ReadOpacTable(variables, opacC2H4, fileArray[5]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -464,7 +468,7 @@ void TotalOpac() {
     
     printf("Read C2H4 Opacity done\n");
 
-    FreeOpacTable(opacC2H4);
+    FreeOpacTable(variables, opacC2H4);
   }
   
   /* Fill in C2H6 opacities */
@@ -480,7 +484,7 @@ void TotalOpac() {
 	opacC2H6.abundance[j][k] = chem.C2H6[j][k];
       }
     }
-    ReadOpacTable(opacC2H6, fileArray[6]);
+    ReadOpacTable(variables, opacC2H6, fileArray[6]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -490,7 +494,7 @@ void TotalOpac() {
     
     printf("Read C2H6 Opacity done\n");
 
-    FreeOpacTable(opacC2H6);
+    FreeOpacTable(variables, opacC2H6);
   }
   
   /* Fill in H2CO opacities */
@@ -506,7 +510,7 @@ void TotalOpac() {
 	opacH2CO.abundance[j][k] = chem.H2CO[j][k];
       }
     }
-    ReadOpacTable(opacH2CO, fileArray[9]);
+    ReadOpacTable(variables, opacH2CO, fileArray[9]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -516,7 +520,7 @@ void TotalOpac() {
     
     printf("Read H2CO Opacity done\n");
     
-    FreeOpacTable(opacH2CO);
+    FreeOpacTable(variables, opacH2CO);
   }
   
   /* Fill in H2S opacities */
@@ -532,7 +536,7 @@ void TotalOpac() {
 	opacH2S.abundance[j][k] = chem.H2S[j][k];
       }
     }
-    ReadOpacTable(opacH2S, fileArray[11]);
+    ReadOpacTable(variables, opacH2S, fileArray[11]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -542,7 +546,7 @@ void TotalOpac() {
     
     printf("Read H2S Opacity done\n");
 
-    FreeOpacTable(opacH2S);
+    FreeOpacTable(variables, opacH2S);
   }
   
   /* Fill in HCl opacities */
@@ -558,7 +562,7 @@ void TotalOpac() {
 	opacHCl.abundance[j][k] = chem.HCl[j][k];
       }
     }
-    ReadOpacTable(opacHCl, fileArray[13]);
+    ReadOpacTable(variables, opacHCl, fileArray[13]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -568,7 +572,7 @@ void TotalOpac() {
     
     printf("Read HCl Opacity done\n");
 
-    FreeOpacTable(opacHCl);
+    FreeOpacTable(variables, opacHCl);
   }
   
   /* Fill in HCN opacities */
@@ -584,7 +588,7 @@ void TotalOpac() {
 	opacHCN.abundance[j][k] = chem.HCN[j][k];
       }
     }
-    ReadOpacTable(opacHCN, fileArray[12]);
+    ReadOpacTable(variables, opacHCN, fileArray[12]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -594,7 +598,7 @@ void TotalOpac() {
     
     printf("Read HCN Opacity done\n");
     
-    FreeOpacTable(opacHCN);
+    FreeOpacTable(variables, opacHCN);
   }
   
   /* Fill in HF opacities */
@@ -610,7 +614,7 @@ void TotalOpac() {
 	opacHF.abundance[j][k] = chem.HF[j][k];
       }
     }
-    ReadOpacTable(opacHF, fileArray[14]);
+    ReadOpacTable(variables, opacHF, fileArray[14]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -620,7 +624,7 @@ void TotalOpac() {
     
     printf("Read HF Opacity done\n");
 
-    FreeOpacTable(opacHF);
+    FreeOpacTable(variables, opacHF);
   }
   
   /* Fill in MgH opacities */
@@ -636,7 +640,7 @@ void TotalOpac() {
 	opacMgH.abundance[j][k] = chem.MgH[j][k];
       }
     }
-    ReadOpacTable(opacMgH, fileArray[15]);
+    ReadOpacTable(variables, opacMgH, fileArray[15]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -646,7 +650,7 @@ void TotalOpac() {
     
     printf("Read MgH Opacity done\n");
 
-    FreeOpacTable(opacMgH);
+    FreeOpacTable(variables, opacMgH);
   }
   
   /* Fill in N2 opacities */
@@ -662,7 +666,7 @@ void TotalOpac() {
 	opacN2.abundance[j][k] = chem.N2[j][k];
       }
     }
-    ReadOpacTable(opacN2, fileArray[16]);
+    ReadOpacTable(variables, opacN2, fileArray[16]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -672,7 +676,7 @@ void TotalOpac() {
     
     printf("Read N2 Opacity done\n");
 
-    FreeOpacTable(opacN2);
+    FreeOpacTable(variables, opacN2);
   }
   
   /* Fill in NO opacities */
@@ -688,7 +692,7 @@ void TotalOpac() {
 	opacNO.abundance[j][k] = chem.NO[j][k];
       }
     }
-    ReadOpacTable(opacNO, fileArray[18]);
+    ReadOpacTable(variables, opacNO, fileArray[18]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -698,7 +702,7 @@ void TotalOpac() {
     
     printf("Read NO Opacity done\n");
 
-    FreeOpacTable(opacNO);
+    FreeOpacTable(variables, opacNO);
   }
   
   /* Fill in NO2 opacities */
@@ -714,7 +718,7 @@ void TotalOpac() {
 	opacNO2.abundance[j][k] = chem.NO2[j][k];
       }
     }
-    ReadOpacTable(opacNO2, fileArray[19]);
+    ReadOpacTable(variables, opacNO2, fileArray[19]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -724,7 +728,7 @@ void TotalOpac() {
     
     printf("Read NO2 Opacity done\n");
 
-    FreeOpacTable(opacNO2);
+    FreeOpacTable(variables, opacNO2);
   }
   
   /* Fill in OCS opacities */
@@ -740,7 +744,7 @@ void TotalOpac() {
 	opacOCS.abundance[j][k] = chem.OCS[j][k];
       }
     }
-    ReadOpacTable(opacOCS, fileArray[22]);
+    ReadOpacTable(variables, opacOCS, fileArray[22]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -750,7 +754,7 @@ void TotalOpac() {
     
     printf("Read OCS Opacity done\n");
 
-    FreeOpacTable(opacOCS);
+    FreeOpacTable(variables, opacOCS);
   }
   
   /* Fill in OH opacities */
@@ -766,7 +770,7 @@ void TotalOpac() {
 	opacOH.abundance[j][k] = chem.OH[j][k];
       }
     }
-    ReadOpacTable(opacOH, fileArray[23]);
+    ReadOpacTable(variables, opacOH, fileArray[23]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -776,7 +780,7 @@ void TotalOpac() {
     
     printf("Read OH Opacity done\n");
 
-    FreeOpacTable(opacOH);
+    FreeOpacTable(variables, opacOH);
   }
   
   /* Fill in PH3 opacities */
@@ -792,7 +796,7 @@ void TotalOpac() {
 	opacPH3.abundance[j][k] = chem.PH3[j][k];
       }
     }
-    ReadOpacTable(opacPH3, fileArray[24]);
+    ReadOpacTable(variables, opacPH3, fileArray[24]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -802,7 +806,7 @@ void TotalOpac() {
     
     printf("Read PH3 Opacity done\n");
 
-    FreeOpacTable(opacPH3);
+    FreeOpacTable(variables, opacPH3);
   }
   
   /* Fill in SH opacities */
@@ -818,7 +822,7 @@ void TotalOpac() {
 	opacSH.abundance[j][k] = chem.SH[j][k];
       }
     }
-    ReadOpacTable(opacSH, fileArray[25]);
+    ReadOpacTable(variables, opacSH, fileArray[25]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -828,7 +832,7 @@ void TotalOpac() {
     
     printf("Read SH Opacity done\n");
 
-    FreeOpacTable(opacSH);
+    FreeOpacTable(variables, opacSH);
   }
   
   /* Fill in SiH opacities */
@@ -844,7 +848,7 @@ void TotalOpac() {
 	opacSiH.abundance[j][k] = chem.SiH[j][k];
       }
     }
-    ReadOpacTable(opacSiH, fileArray[27]);
+    ReadOpacTable(variables, opacSiH, fileArray[27]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -854,7 +858,7 @@ void TotalOpac() {
     
     printf("Read SiH Opacity done\n");
 
-    FreeOpacTable(opacSiH); 
+    FreeOpacTable(variables, opacSiH); 
   }
   
   /* Fill in SiO opacities */
@@ -870,7 +874,7 @@ void TotalOpac() {
 	opacSiO.abundance[j][k] = chem.SiO[j][k];
       }
     }
-    ReadOpacTable(opacSiO, fileArray[28]);
+    ReadOpacTable(variables, opacSiO, fileArray[28]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -880,7 +884,7 @@ void TotalOpac() {
     
     printf("Read SiO Opacity done\n");
 
-    FreeOpacTable(opacSiO);
+    FreeOpacTable(variables, opacSiO);
   }
   
   /* Fill in SO2 opacities */
@@ -896,7 +900,7 @@ void TotalOpac() {
 	opacSO2.abundance[j][k] = chem.SO2[j][k];
       }
     }
-    ReadOpacTable(opacSO2, fileArray[26]);
+    ReadOpacTable(variables, opacSO2, fileArray[26]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -906,7 +910,7 @@ void TotalOpac() {
     
     printf("Read SO2 Opacity done\n");
 
-    FreeOpacTable(opacSO2);
+    FreeOpacTable(variables, opacSO2);
   }
   
   /* Fill in TiO opacities */
@@ -922,7 +926,7 @@ void TotalOpac() {
 	opacTiO.abundance[j][k] = chem.TiO[j][k];
       }
     }
-    ReadOpacTable(opacTiO, fileArray[29]);
+    ReadOpacTable(variables, opacTiO, fileArray[29]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -932,7 +936,7 @@ void TotalOpac() {
     
     printf("Read TiO Opacity done\n");
 
-    FreeOpacTable(opacTiO);
+    FreeOpacTable(variables, opacTiO);
   }
   
   /* Fill in VO opacities */
@@ -948,7 +952,7 @@ void TotalOpac() {
 	opacVO.abundance[j][k] = chem.VO[j][k];
       }
     }
-    ReadOpacTable(opacVO, fileArray[30]);
+    ReadOpacTable(variables, opacVO, fileArray[30]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -958,7 +962,7 @@ void TotalOpac() {
     
     printf("Read VO Opacity done\n");
     
-    FreeOpacTable(opacVO);
+    FreeOpacTable(variables, opacVO);
   }
 
   /* Atomic opacities */
@@ -976,7 +980,7 @@ void TotalOpac() {
   	opacNa.abundance[j][k] = chem.Na[j][k];
       }
     }
-    ReadOpacTable(opacNa, fileArray[31]);
+    ReadOpacTable(variables, opacNa, fileArray[31]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -986,7 +990,7 @@ void TotalOpac() {
     
     printf("Read Na Opacity done\n");
     
-    FreeOpacTable(opacNa);
+    FreeOpacTable(variables, opacNa);
   }
 
   /* Fill in K opacities */
@@ -1002,7 +1006,7 @@ void TotalOpac() {
   	opacK.abundance[j][k] = chem.K[j][k];
       }
     }
-    ReadOpacTable(opacK, fileArray[32]);
+    ReadOpacTable(variables, opacK, fileArray[32]);
     
     //Populate opac.kappa
     for (i=0; i<NLAMBDA; i++)
@@ -1012,7 +1016,7 @@ void TotalOpac() {
     
     printf("Read K Opacity done\n");
     
-    FreeOpacTable(opacK);
+    FreeOpacTable(variables, opacK);
   }
   
   /* Fill in total opacities */
@@ -1115,7 +1119,7 @@ void TotalOpac() {
   	for(k = 0; k < NTEMP; k++)
   	  opac.kappa[i][j][k] += opacCIA.kappa[i][j][k]; //Add to overall kappa
     
-    FreeOpacTable(opacCIA);
+    FreeOpacTable(variables, opacCIA);
   }
  
   /* Rayleigh scattering */
@@ -1235,7 +1239,7 @@ void TotalOpac() {
       }
     }
     
-    FreeOpacTable(opacscat);
+    FreeOpacTable(variables, opacscat);
   }
 
   /*  Free memory */
