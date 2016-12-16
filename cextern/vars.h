@@ -45,6 +45,9 @@ typedef struct vars{
   double T_STAR;
 
   char* tpfname;
+  char* eosfname;
+
+  int chemselection[32];
 
 }vars;
 

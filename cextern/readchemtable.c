@@ -42,12 +42,17 @@ void ReadChemTable(struct vars variables) {
   
   int i, j;
   char dum[8];
-  int chemSelection[30];
+  int chemSelection[32];
   
   /* Initialize and obtain variables from other files */
   char **fileArray = getFileArray();
   // vars variables = getVars();
-  getChemSelection(chemSelection);
+  // getChemSelection(chemSelection);
+  for (i=0; i<32; i++) {
+    chemSelection[i] = variables.chemselection[i];
+  }
+  
+
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;
   
@@ -100,7 +105,8 @@ void ReadChemTable(struct vars variables) {
   
   /* Read in chemistry table */	
   
-  f1 = fopen(fileArray[1],"r");
+  // f1 = fopen(fileArray[1],"r");
+  f1 = fopen(variables.eosfname, "r");
   if(f1 == NULL){
     printf("\nreadchemtable.c:\nError opening file: %s \nNo such file or directory.\nMake sure you have the appropriate file path and name specified in userInput.in\n\n", fileArray[1]);
     exit(1);

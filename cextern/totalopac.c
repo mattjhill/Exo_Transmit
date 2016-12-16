@@ -95,7 +95,11 @@ void TotalOpac(struct vars variables) {
   // vars variables = getVars(); 		//get planet variables
   int chemSelection[32]; 		//get chemistry selections
   
-  getChemSelection(chemSelection); 
+  // getChemSelection(chemSelection); 
+  for (i=0; i<32; i++) {
+    chemSelection[i] = variables.chemselection[i];
+    printf("%d %d\n", variables.chemselection[i], chemSelection[i]);
+  }
   
   int NLAMBDA = variables.NLAMBDA; 	//rename relevant variables
   int NPRESSURE = variables.NPRESSURE;
