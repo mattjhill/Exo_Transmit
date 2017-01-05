@@ -91,14 +91,12 @@ void TotalOpac(struct vars variables) {
     **opac_CIA_O2N2, **opac_CIA_O2O2;
   int i, j, k;
   
-  char **fileArray = getFileArray(); 	//get file names
-  // vars variables = getVars(); 		//get planet variables
+  char **fileArray = variables.fileArray;
+  printf("%s\n", fileArray[0]);
   int chemSelection[32]; 		//get chemistry selections
   
-  // getChemSelection(chemSelection); 
   for (i=0; i<32; i++) {
     chemSelection[i] = variables.chemselection[i];
-    printf("%d %d\n", variables.chemselection[i], chemSelection[i]);
   }
   
   int NLAMBDA = variables.NLAMBDA; 	//rename relevant variables
@@ -246,7 +244,6 @@ void TotalOpac(struct vars variables) {
 	opacCH4.abundance[j][k] = chem.CH4[j][k];  
       }
     }
-    
     ReadOpacTable(variables, opacCH4, fileArray[3]);     //Read opacity table for CH4
     
     /* Populate opac.kappa */
@@ -1048,7 +1045,7 @@ void TotalOpac(struct vars variables) {
 	  opacCIA.kappa[i][j][k] = 0.;
     
     /* Read in CIA opacities */
-    
+
     f1 = fopen(fileArray[33], "r");
     if(f1 == NULL){
       printf("\n totalopac.c:\nError opening file: %s -- No such file or directory\n\n", fileArray[33]);
@@ -1061,7 +1058,7 @@ void TotalOpac(struct vars variables) {
     for (k=0; k<NTEMP; k++){
       fscanf(f1, "%le", &opacCIA.T[k]);
       for (i=0; i<NLAMBDA; i++){
-	fscanf(f1, "%le %le %le %le %le %le %le %le %le %le %le %le %le %le %le", &atmos.lambda[i], &opac_CIA_H2H2[k][i], &opac_CIA_H2He[k][i], &opac_CIA_H2H[k][i], &opac_CIA_H2CH4[k][i], &opac_CIA_CH4Ar[k][i], &opac_CIA_CH4CH4[k][i], &opac_CIA_CO2CO2[k][i], &opac_CIA_HeH[k][i], &opac_CIA_N2CH4[k][i], &opac_CIA_N2H2[k][i], &opac_CIA_N2N2[k][i], &opac_CIA_O2CO2[k][i], &opac_CIA_O2N2[k][i], &opac_CIA_O2O2[k][i]);
+        fscanf(f1, "%le %le %le %le %le %le %le %le %le %le %le %le %le %le %le", &atmos.lambda[i], &opac_CIA_H2H2[k][i], &opac_CIA_H2He[k][i], &opac_CIA_H2H[k][i], &opac_CIA_H2CH4[k][i], &opac_CIA_CH4Ar[k][i], &opac_CIA_CH4CH4[k][i], &opac_CIA_CO2CO2[k][i], &opac_CIA_HeH[k][i], &opac_CIA_N2CH4[k][i], &opac_CIA_N2H2[k][i], &opac_CIA_N2N2[k][i], &opac_CIA_O2CO2[k][i], &opac_CIA_O2N2[k][i], &opac_CIA_O2O2[k][i]);
       }
     }
 

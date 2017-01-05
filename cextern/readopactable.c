@@ -48,7 +48,6 @@ void ReadOpacTable(struct vars variables, struct Opac opac, char *filename) {
 
   int i, j, k;
   double junk;
-  // vars variables = getVars();
   int NLAMBDA = variables.NLAMBDA;
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;
@@ -62,7 +61,7 @@ void ReadOpacTable(struct vars variables, struct Opac opac, char *filename) {
  
   f1 = fopen(filename,"r");
   if(f1 == NULL){
-    printf("\nreadopactable.c:\nError opening %s opacity file\nPlease check that the proper name and path is specified in otherInput.in\n", opac.name);
+    printf("\nreadopactable.c:\nError opening %s opacity file %s\nPlease check that the proper name and path is specified in otherInput.in\n", opac.name, filename);
     exit(1);
   }
   
@@ -106,7 +105,6 @@ void ReadOpacTable(struct vars variables, struct Opac opac, char *filename) {
 
 void FreeOpacTable(struct vars variables, struct Opac opac)
 {
-  // vars variables = getVars();
   int NLAMBDA = variables.NLAMBDA;
   int NTEMP = variables.NTEMP;
   int NPRESSURE = variables.NPRESSURE;

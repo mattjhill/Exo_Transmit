@@ -47,6 +47,8 @@ typedef struct vars{
   char* tpfname;
   char* eosfname;
 
+  char** fileArray;
+
   int chemselection[32];
 
 }vars;
