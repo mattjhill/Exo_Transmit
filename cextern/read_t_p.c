@@ -47,8 +47,6 @@ void ReadTP(struct vars variables)
 {
   
   /* Get relevant variables */
-  char **fileArray = getFileArray();	
-  // vars variables = getVars();
   getNTau(&variables, variables.tpfname);
   
   /* Rename for convenience */

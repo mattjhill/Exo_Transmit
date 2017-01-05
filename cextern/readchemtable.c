@@ -45,7 +45,7 @@ void ReadChemTable(struct vars variables) {
   int chemSelection[32];
   
   /* Initialize and obtain variables from other files */
-  char **fileArray = getFileArray();
+  // char **fileArray = getFileArray();
   // vars variables = getVars();
   // getChemSelection(chemSelection);
   for (i=0; i<32; i++) {
@@ -106,9 +106,10 @@ void ReadChemTable(struct vars variables) {
   /* Read in chemistry table */	
   
   // f1 = fopen(fileArray[1],"r");
+  printf("Using EOS file: %s\n", variables.eosfname);
   f1 = fopen(variables.eosfname, "r");
   if(f1 == NULL){
-    printf("\nreadchemtable.c:\nError opening file: %s \nNo such file or directory.\nMake sure you have the appropriate file path and name specified in userInput.in\n\n", fileArray[1]);
+    // printf("\nreadchemtable.c:\nError opening file: %s \nNo such file or directory.\nMake sure you have the appropriate file path and name specified in userInput.in\n\n", fileArray[1]);
     exit(1);
   }
   
